@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.widget.Toast;
 
+import java.lang.reflect.Method;
 import java.util.Set;
 
 /**
@@ -17,11 +18,11 @@ import java.util.Set;
 public class Bluetooth {
 
     public static int ENABLE_BLUETOOTH = 1;
-    public static String DEVICE_NAME = "My_Device_Name";
+    public static String DEVICE_NAME = "Guilherme";
     private Activity context;
     private BluetoothAdapter bluetoothAdapter;
     private BluetoothDevice device;
-    private ConnectionBluetoothThread connect;
+//    private ConnectionBluetoothThread connect;
     private boolean isConnected = false;
     IntentFilter filter1 = new IntentFilter(BluetoothDevice.ACTION_ACL_CONNECTED);
     IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECT_REQUESTED);
@@ -34,7 +35,6 @@ public class Bluetooth {
         this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         solicitaAtivacaoDoBluetooth();
         enableVisibility();
-        searchPairedDevices();
     }
 
     private void solicitaAtivacaoDoBluetooth() {
@@ -110,6 +110,14 @@ public class Bluetooth {
                     }
                 }
             }
+
+
+            try {
+                createBond(result);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             initConnection(result);
         }
     }
@@ -117,8 +125,27 @@ public class Bluetooth {
     private void initConnection(BluetoothDevice result) {
         if (result != null) {
             this.device = result;
-            connect = new ConnectionBluetoothThread(device.getAddress());
-            connect.start();
+//            connect = new ConnectionBluetoothThread(device.getAddress());
+//            connect.start();
         }
+    }
+
+    public boolean removeBond(BluetoothDevice btDevice)
+            throws Exception
+    {
+        Class btClass = Class.forName("android.bluetooth.BluetoothDevice");
+        Method removeBondMethod = btClass.getMethod("removeBond");
+        Boolean returnValue = (Boolean) removeBondMethod.invoke(btDevice);
+        return returnValue.booleanValue();
+    }
+
+
+    public boolean createBond(BluetoothDevice btDevice)
+            throws Exception
+    {
+        Class class1 = Class.forName("android.bluetooth.BluetoothDevice");
+        Method createBondMethod = class1.getMethod("createBond");
+        Boolean returnValue = (Boolean) createBondMethod.invoke(btDevice);
+        return returnValue.booleanValue();
     }
 }

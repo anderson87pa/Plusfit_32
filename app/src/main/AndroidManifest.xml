@@ -23,7 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activity.IniciaAtividadeActivity"/>
+        <activity android:name=".Activity.DeviceListActivity"/>
     </application>
 
 </manifest>
