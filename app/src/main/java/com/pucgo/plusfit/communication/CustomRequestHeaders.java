@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.HttpHeaderParser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -72,7 +73,7 @@ public class CustomRequestHeaders extends Request {
                 setShouldCache(false);
 
             String jsonString = new String(networkResponse.data, HttpHeaderParser.parseCharset(networkResponse.headers));
-            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonObject = new JSONArray(jsonString);
 
             return Response.success(jsonObject, HttpHeaderParser.parseCacheHeaders(networkResponse));
         } catch (UnsupportedEncodingException e) {
